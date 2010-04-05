@@ -19,4 +19,6 @@ public interface ISynth {
     void kill();
 
     void control(String parameter, float value);
+
+    void recieve(float velocity, long time);
 }

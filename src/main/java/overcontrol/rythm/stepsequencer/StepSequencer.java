@@ -11,10 +11,12 @@ import java.awt.geom.Line2D;
 import javax.swing.Timer;
 import overcontrol.core.Tools;
 import overcontrol.core.GUIComponent;
+import overcontrol.synth.ISynth;
 
 public class StepSequencer extends GUIComponent {
 
     float[][][] velocities;
+    ISynth[] synths;
     Step[][] stepGroup;
     FocusStep[] focusStepGroup;
     SGGroup steps = new SGGroup();
@@ -46,7 +48,7 @@ public class StepSequencer extends GUIComponent {
     private int delay = 0;
     private float bpm = 0;
     private int lastFocussedTrack;
-    private int numPresets = 8;
+    private int nPresets = 8;
     private int currentPreset = 0;
     public static int THIRTYSECOND_NOTE = 4;
     public static int SIXTEENTH_NOTE = 2;
@@ -82,7 +84,8 @@ public class StepSequencer extends GUIComponent {
 
         currentFocussedTrack = 0;
 
-        velocities = new float[numPresets][nTracks][nCounts];
+        velocities = new float[nPresets][nTracks][nCounts];
+        synths = new ISynth[nTracks];
 
         base.setShape(new RoundRectangle2D.Float(0, 0, tw + plusWidth, th + plusHeight, r, r));
         base.setFillPaint(this.getBaseColor());
@@ -191,11 +194,11 @@ public class StepSequencer extends GUIComponent {
     }
 
     public void setNumPresets(int i) {
-        numPresets = i;
+        nPresets = i;
     }
 
     public int getNumPresets() {
-        return numPresets;
+        return nPresets;
     }
 
     public void setCurrentPreset(int i) {
@@ -234,8 +237,6 @@ public class StepSequencer extends GUIComponent {
         this.focusMode = isFocusMode;
     }
 
-
-
     public void setCurrentFocussedTrack(int i) {
         currentFocussedTrack = i;
         System.out.println(i);
@@ -248,6 +249,17 @@ public class StepSequencer extends GUIComponent {
         stepCountOn(count % nCounts);
         count = count % nCounts;
 
+
+    }
+
+    void increaseCount(long now) {
+        lastCount = count;
+        count++;
+        stepCountOff(lastCount % nCounts);
+        stepCountOn(count % nCounts);
+        count = count % nCounts;
+
+        sendVelocities(count, now);
     }
 
     public void setCount(int i) {
@@ -352,7 +364,7 @@ public class StepSequencer extends GUIComponent {
         for (int track = 0; track < nTracks; track++) {
             for (int step = 0; step < nCounts; step++) {
                 stepGroup[track][step].updateVelocity(velocities[currentPreset][track][step]);
-                if(velocities[currentPreset][track][step] > 0) {
+                if (velocities[currentPreset][track][step] > 0) {
                     stepGroup[track][step].setAlive(true);
                 }
             }
@@ -375,7 +387,7 @@ public class StepSequencer extends GUIComponent {
         System.out.println("the current track is :" + currentFocussedTrack);
         for (int i = 0; i < nTracks; i++) {
             for (int j = 0; j < nCounts; j++) {
-                System.out.print("[ " + velocities[currentPreset][i][j] + " - " + stepGroup[i][j].getVelocity() + "  -  o = " + stepGroup[i][j].velocityStep.getOpacity() +" ]");
+                System.out.print("[ " + velocities[currentPreset][i][j] + " - " + stepGroup[i][j].getVelocity() + "  -  o = " + stepGroup[i][j].velocityStep.getOpacity() + " ]");
             }
             System.out.println();
         }
@@ -399,6 +411,26 @@ public class StepSequencer extends GUIComponent {
 
     float getVelocty(int i, int trackID, int stepID) {
         return velocities[i][trackID][stepID];
+    }
+
+    public void setSynth(int i, ISynth synth) {
+        synths[i] = synth;
+    }
+
+    public void setSynth(ISynth[] synths) {
+        this.synths = synths;
+    }
+
+    //send velocities on to the stored synths
+    private void sendVelocities(int step, long now) {
+        for (int i = 0; i < nTracks; i++) {
+            try {
+                float newVelocity = velocities[currentPreset][i][step];
+                synths[i].recieve(newVelocity, now);
+            } catch (java.lang.NullPointerException e) {
+                System.out.println("no synth set at ISynth " + i);
+            }
+        }
     }
 }
 

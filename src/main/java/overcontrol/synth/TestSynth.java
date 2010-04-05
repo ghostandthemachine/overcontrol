@@ -48,4 +48,9 @@ public class TestSynth implements ISynth {
     public void control(String parameter, float value) {
         System.out.println("Control: " + parameter + "   " + value);
     }
+
+    @Override
+    public void recieve(float velocity, long time) {
+        System.out.println("synth  " + this + "  v = " + velocity + "  t = " + time);
+    }
 }
