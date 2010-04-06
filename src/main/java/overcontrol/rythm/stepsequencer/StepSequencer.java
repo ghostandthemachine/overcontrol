@@ -252,7 +252,7 @@ public class StepSequencer extends GUIComponent {
 
     }
 
-    void increaseCount(long now) {
+    public void increaseCount(long now) {
         lastCount = count;
         count++;
         stepCountOff(lastCount % nCounts);
@@ -272,6 +272,10 @@ public class StepSequencer extends GUIComponent {
 
     public int getCount() {
         return count;
+    }
+
+    public int getLastCount() {
+        return this.lastCount;
     }
 
     public void setDelay(int d) {

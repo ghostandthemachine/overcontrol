@@ -1,6 +1,5 @@
 package overcontrol.core;
 
-import overcontrol.core.GUIComponent;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.RenderingHints;
@@ -13,7 +12,6 @@ import com.sun.scenario.scenegraph.SGGroup;
 import com.sun.scenario.scenegraph.SGShape;
 import com.sun.scenario.scenegraph.SGTransform;
 import com.sun.scenario.scenegraph.fx.FXShape;
-import overcontrol.core.Tools;
 
 public class BasicDial extends GUIComponent {
 
