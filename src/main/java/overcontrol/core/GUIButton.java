@@ -4,7 +4,6 @@
  */
 package overcontrol.core;
 
-import com.sun.scenario.scenegraph.SGGroup;
 import com.sun.scenario.scenegraph.SGNode;
 import com.sun.scenario.scenegraph.SGShape;
 import com.sun.scenario.scenegraph.event.SGMouseListener;

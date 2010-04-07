@@ -270,7 +270,7 @@ public class StepSequencer extends GUIComponent {
         count = count % nCounts;
     }
 
-    public int getCount() {
+    public int getCurrentCount() {
         return count;
     }
 

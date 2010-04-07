@@ -9,7 +9,6 @@ public class MasterTimer extends Timer {
 
     public MasterTimer() {
         super(500, null);
-        this.start();
     }
 
     public void setBpm(float i) {

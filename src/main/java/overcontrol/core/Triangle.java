@@ -23,7 +23,6 @@ public class Triangle implements Shape {
         poly.addPoint(p3.x, p3.y);
     }
 
-
     public void draw(Graphics g) {
         g.drawPolygon(poly);
     }

@@ -1,5 +1,9 @@
 package overcontrol.core;
 
+import com.sun.scenario.scenegraph.SGShape;
+import com.sun.scenario.scenegraph.fx.FXShape;
+import java.awt.Color;
+import java.awt.Point;
 import java.util.*;
 
 public class Tools {
@@ -92,5 +96,19 @@ public class Tools {
         double c = Math.sqrt((a * a) + (b * b));
         return c;
 
+    }
+
+    public static FXShape createTriangle(GUIButton shape, int pad) {
+        FXShape triangle = new FXShape();
+        //top left
+        Point p1 = new Point((int) (pad + shape.getX()), (int) (pad + shape.getY()));
+        //right
+        Point p2 = new Point((int) (shape.getWidth() - pad + shape.getX()), (int) (shape.getY() + shape.getHeight() / 2));
+        //bottom left
+        Point p3 = new Point((int) (pad + shape.getX()), (int) (shape.getY() + shape.getHeight() - pad));
+
+        Triangle tri = new Triangle(p1, p2, p3);
+        triangle.setShape(tri);
+        return triangle;
     }
 }

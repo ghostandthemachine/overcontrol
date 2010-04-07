@@ -4,17 +4,14 @@
  */
 package overcontrol.core;
 
-import com.sun.scenario.scenegraph.SGNode;
-import com.sun.scenario.scenegraph.event.SGMouseListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseWheelEvent;
+import com.sun.scenario.scenegraph.event.SGMouseAdapter;
 import overcontrol.rythm.stepsequencer.AdvancedStepSequencer;
 
 /**
  *
  * @author Jon
  */
-public class GUIButtonClickListener implements SGMouseListener {
+public class GUIButtonClickListener extends SGMouseAdapter {
 
     public GUIButton parent;
     public AdvancedStepSequencer advSeq;
@@ -32,42 +29,6 @@ public class GUIButtonClickListener implements SGMouseListener {
         advSeq = c;
         column = col;
         row = r;
-    }
-
-    public void mouseClicked(MouseEvent me, SGNode sgnode) {
-        clicked();
-    }
-
-    public void mousePressed(MouseEvent me, SGNode sgnode) {
-        pressed();
-    }
-
-    public void mouseReleased(MouseEvent me, SGNode sgnode) {
-        released();
-    }
-
-    public void mouseEntered(MouseEvent me, SGNode sgnode) {
-    }
-
-    public void mouseExited(MouseEvent me, SGNode sgnode) {
-    }
-
-    public void mouseDragged(MouseEvent me, SGNode sgnode) {
-    }
-
-    public void mouseMoved(MouseEvent me, SGNode sgnode) {
-    }
-
-    public void mouseWheelMoved(MouseWheelEvent mwe, SGNode sgnode) {
-    }
-
-    public void clicked() {
-    }
-
-    public void pressed() {
-    }
-
-    public void released() {
     }
 
     public GUIButton getParent() {
