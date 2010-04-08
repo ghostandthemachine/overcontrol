@@ -33,7 +33,7 @@ public class LED extends SGGroup {
         led.setAntialiasingHint(RenderingHints.VALUE_ANTIALIAS_ON);
         led.setDrawStroke(new BasicStroke(strokeSize));
         led.setFillPaint(ledOffColor);
-        led.setMode(Mode.STROKE_FILL);
+        led.setMode(Mode.FILL);
         this.add(led);
     }
 
@@ -51,6 +51,7 @@ public class LED extends SGGroup {
 
     public void setBorderColor(Color borderColor) {
         this.borderColor = borderColor;
+        led.setDrawPaint(borderColor);
     }
 
     public Color getLedOffColor() {
@@ -59,6 +60,7 @@ public class LED extends SGGroup {
 
     public void setLedOffColor(Color ledOffColor) {
         this.ledOffColor = ledOffColor;
+        led.setFillPaint(ledOffColor);
     }
 
     public Color getLedOnColor() {

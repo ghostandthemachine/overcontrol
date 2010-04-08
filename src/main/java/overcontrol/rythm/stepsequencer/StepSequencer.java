@@ -248,8 +248,10 @@ public class StepSequencer extends GUIComponent {
         stepCountOff(lastCount % nCounts);
         stepCountOn(count % nCounts);
         count = count % nCounts;
+    }
 
-
+    public int getStepCount() {
+        return nCounts;
     }
 
     public void increaseCount(long now) {

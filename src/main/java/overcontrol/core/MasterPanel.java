@@ -27,8 +27,9 @@ public class MasterPanel extends JSGPanel {
     private Timer timer;
     private float speed = (float) ((1.0 / 120.0) * 60000.0);
     private int counter;
+    private MasterTimer masterTimer;
 
-    public MasterPanel() {
+    public MasterPanel(MasterTimer timer) {
 
         TestSynth[] synths = {
             new TestSynth(),
@@ -41,7 +42,9 @@ public class MasterPanel extends JSGPanel {
             new TestSynth(),
         };
 
-        AdvancedStepSequencer seq = new AdvancedStepSequencer(20, 20, 16, 8);
+        masterTimer = timer;
+
+        AdvancedStepSequencer seq = new AdvancedStepSequencer(20, 20, 16, 8,masterTimer);
         seq.setBpm(120);
 
         //set current synths being triggered by passing an array or (id, synth)

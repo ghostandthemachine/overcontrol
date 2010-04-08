@@ -22,6 +22,7 @@ import java.awt.Shape;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
 /**
@@ -466,5 +467,9 @@ public class GUIComponent extends FXGroup {
 
     public GUIComponent getGUIParent() {
         return parent;
+    }
+
+    public void setBaseShapeToRectangle() {
+        baseShape.setShape(new Rectangle2D.Double(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
     }
 }

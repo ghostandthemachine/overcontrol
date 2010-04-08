@@ -11,6 +11,7 @@ import java.awt.geom.Point2D;
 import overcontrol.core.GUIButton;
 import overcontrol.core.GUIButtonClickListener;
 import overcontrol.core.LED;
+import overcontrol.core.MasterTimer;
 import overcontrol.core.Tools;
 
 public class AdvancedStepSequencer extends StepSequencer {
@@ -24,14 +25,16 @@ public class AdvancedStepSequencer extends StepSequencer {
     private int nSteps;
     private GUIButton trigger;
     private LED[] leds;
+    private MasterTimer masterTimer;
 
-    public AdvancedStepSequencer(float tx, float ty, int tsteps, int ttracks) {
+    public AdvancedStepSequencer(float tx, float ty, int tsteps, int ttracks, MasterTimer timer) {
         super(tx, ty, 250, 100, tsteps, ttracks, 50, 0, 90, 10);
         nTracks = ttracks;
         nSteps = tsteps;
+        masterTimer = timer;
+        
 
         this.addComponent(createTrackSelectorInterface());
-//        this.addComponent(createPresetInterface());
 
         ResolutionDial resoultionDial = new ResolutionDial(this.getX() + this.getWidth() - 28, this.getY() + 6, 16, this);
         resoultionDial.setBaseShapeOpacity(0.3f);
@@ -44,7 +47,10 @@ public class AdvancedStepSequencer extends StepSequencer {
         createLeds();
 
 
+        masterTimer.addSubTimerActionListener(new AdvancedStepSequencerListener(this, masterTimer));
+
     }
+
 
     @Override
     public void increaseCount() {
@@ -77,7 +83,7 @@ public class AdvancedStepSequencer extends StepSequencer {
             }
         };
 
-        trigger.addIndicator(Tools.createTriangle(trigger, 2));
+        trigger.addIndicator(trigger.createTriangle());
         trigger.setBaseColor(Color.lightGray);
         trigger.setOnColor(Color.white);
 
@@ -103,6 +109,7 @@ public class AdvancedStepSequencer extends StepSequencer {
 
                     private boolean toggle = false;
 
+                    @Override
                     public void mouseClicked(MouseEvent e, SGNode node) {
                         if (toggle) {
                             toggle = false;
@@ -147,14 +154,12 @@ public class AdvancedStepSequencer extends StepSequencer {
             double by = p1.y + (i * this.getStepShape().getHeight()) + 2;
 
             trackSelectionButtons[i] = new GUIButton(bx, by, bw, bh, Integer.toString(0));
-            trackSelectionButtons[i].addMouseListener(new AdvancedStepSequencerListener(this) {
+            trackSelectionButtons[i].addMouseListener(new SelectionButtonListener(this) {
 
                 private boolean toggle = false;
 
                 @Override
                 public void mouseClicked(MouseEvent e, SGNode node) {
-                    StepSequencer sequencer = (StepSequencer) this.getParentSequencer();
-
                     if (trackSelectionButtons[id].isOn()) {
                         trackSelectionButtons[id].setOff();
                         sequencer.unfocusTrack(id);
@@ -202,7 +207,17 @@ public class AdvancedStepSequencer extends StepSequencer {
             double tx = 76 + (i * ((radius * 2) + 3.4));
             double ty = this.getY() + this.getHeight() - 10;
             leds[i] = new LED(tx, ty, radius);
+            leds[i].setLedOnColor(Color.GREEN);
+            leds[i].setLedOffColor(new Color(0,255,0,50));
             this.add(leds[i]);
         }
     }
+
+    @Override
+    public void setCount(int i) {
+        super.setCount(i);
+        leds[this.getLastCount()].off();
+        leds[this.getCurrentCount()].on();
+    }
+
 }

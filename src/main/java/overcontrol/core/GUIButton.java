@@ -4,13 +4,16 @@
  */
 package overcontrol.core;
 
+import com.sun.scenario.scenegraph.SGGroup;
 import com.sun.scenario.scenegraph.SGNode;
 import com.sun.scenario.scenegraph.SGShape;
 import com.sun.scenario.scenegraph.event.SGMouseListener;
 import com.sun.scenario.scenegraph.fx.FXGroup;
 import com.sun.scenario.scenegraph.fx.FXShape;
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 
 /**
@@ -21,8 +24,8 @@ public class GUIButton extends GUIComponent {
 
     private FXShape indicator = new FXShape();
     private FXShape buttonShape = new FXShape();
-    private Color fillColor = Color.lightGray;
-    private Color onColor = Color.PINK;
+    private Color fillColor = new Color(200,200,200);
+    private Color onColor = new Color(150,150,150);
     private String id;
     private boolean isOn = false;
     private Color indicatorOnColor = Color.white;
@@ -61,11 +64,6 @@ public class GUIButton extends GUIComponent {
         buttonShape.addMouseListener(a);
     }
 
-    @Override
-    public FXGroup getComponentGroup() {
-        return this;
-    }
-
     public FXShape getButtonShape() {
         return buttonShape;
     }
@@ -90,12 +88,11 @@ public class GUIButton extends GUIComponent {
         this.onColor = onColor;
     }
 
-    public void addIndicator(SGNode node) {
+    public void addIndicator(FXShape node) {
         indicator = (FXShape) node;
         indicator.setFillPaint(indicatorColor);
         indicator.setMode(SGShape.Mode.STROKE_FILL);
         indicator.setAntialiasingHint(RenderingHints.VALUE_ANTIALIAS_ON);
-        
 
         this.addComponent(indicator);
     }
@@ -106,6 +103,34 @@ public class GUIButton extends GUIComponent {
 
     public void setIdicatorColor(Color color) {
         indicatorColor = color;
+    }
+
+    public FXShape createTriangle() {
+        int pad = (int) (this.getHeight() / 4);
+        FXShape triangle = new FXShape();
+        Point p1 = new Point((int) (pad + this.getX()), (int) (pad + this.getY()));
+        Point p2 = new Point((int) (this.getWidth() - pad + this.getX()), (int) (this.getY() + this.getHeight() / 2));
+        Point p3 = new Point((int) (pad + this.getX()), (int) (this.getY() + this.getHeight() - pad));
+
+        Triangle tri = new Triangle(p1, p2, p3);
+
+        triangle.setShape(tri);
+        return triangle;
+
+    }
+
+    public FXShape createSquare() {
+        FXShape shape = new FXShape();
+        double pad = this.getWidth() / 4;
+        shape.setShape(new RoundRectangle2D.Double(this.getX() + pad, this.getY() + pad, this.getWidth()/2, this.getWidth()/2, 5, 5));
+        return shape;
+    }
+
+     public FXShape createCircle() {
+        FXShape shape = new FXShape();
+        double pad = this.getWidth() / 4;
+        shape.setShape(new Ellipse2D.Double(this.getX() + pad, this.getY() + pad, this.getWidth()/2, this.getWidth()/2));
+        return shape;
     }
 }
 

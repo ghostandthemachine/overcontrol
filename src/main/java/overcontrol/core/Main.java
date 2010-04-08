@@ -4,6 +4,8 @@
  */
 package overcontrol.core;
 
+import overcontrol.core.transport.Transport;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
@@ -24,11 +26,19 @@ public class Main {
         JFrame frame = new JFrame();
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(500, 500));
+        frame.setPreferredSize(new Dimension(800, 800));
         frame.pack();
         frame.setVisible(true);
         frame.setTitle("Scenario interface tests");
-        MasterPanel master = new MasterPanel();
-        frame.add(master);
+        frame.setLayout(new BorderLayout());
+        MasterTimer timer = new MasterTimer();
+        MasterPanel master = new MasterPanel(timer);
+
+        Transport transport = new Transport(timer);
+        transport.setPreferredSize(new Dimension(frame.getSize().width, 30));
+        frame.add(master, BorderLayout.CENTER);
+        frame.add(transport, BorderLayout.SOUTH);
+
+        
     }
 }

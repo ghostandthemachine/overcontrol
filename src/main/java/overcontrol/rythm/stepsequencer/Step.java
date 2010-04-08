@@ -28,7 +28,7 @@ public class Step extends SGGroup {
     public FXShape velocityStep = new FXShape();
     FXShape hitStep = new FXShape();
     //Colors for base shape
-    Color stepFillColor = new Color(150, 150, 150);
+    Color stepFillColor = new Color(150, 150, 150, 200);
     Color stepCountColor = Color.ORANGE;
     Color currentFillColor = stepFillColor;
     //Colors for velocity rect
@@ -53,7 +53,7 @@ public class Step extends SGGroup {
         stepID = si;
         parent = s;
 
-        delayTime = parent.getDelay();
+        delayTime = parent.getDelay() * 2;
 
         //Set the animation fade out length to the same duration as a time between steps
         hardFadeOut = Clip.create(delayTime, hitStep, "opacity", 1f, 0f);
@@ -94,6 +94,11 @@ public class Step extends SGGroup {
     }
 
     public void hitCount() {
+        delayTime = parent.getDelay() * 2;
+        //Set the animation fade out length to the same duration as a time between steps
+        hardFadeOut.setDuration(delayTime);
+        softFadeOut.setDuration(delayTime);
+
         if (isAlive) {
             hardFadeOut.start();
         } else {
@@ -193,7 +198,7 @@ public class Step extends SGGroup {
     }
 
     public void setDelay(int d) {
-        delayTime = d;
+        delayTime = d * 2;
         //Set the animation fade out length to the same duration as a time between steps
         hardFadeOut = Clip.create(delayTime, hitStep, "opacity", 1f, 0f);
         softFadeOut = Clip.create(delayTime, hitStep, "opacity", 0.3f, 0f);
