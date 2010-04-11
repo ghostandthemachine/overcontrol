@@ -393,7 +393,6 @@ public class StepSequencer extends GUIComponent {
 
     //used when velocity is set by focus track class
     void updateVelocityArray(int stepID, float velocity) {
-        velocities[currentPreset][currentFocussedTrack][stepID] = velocity;
         stepGroup[currentFocussedTrack][stepID].setVelocity(velocity);
     }
 
