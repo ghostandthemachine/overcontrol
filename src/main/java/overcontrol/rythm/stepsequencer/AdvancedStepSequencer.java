@@ -11,7 +11,6 @@ import java.awt.geom.Point2D;
 import overcontrol.core.GUIButton;
 import overcontrol.core.GUIButtonClickListener;
 import overcontrol.core.LED;
-import overcontrol.core.MasterTimer;
 
 public class AdvancedStepSequencer extends StepSequencer {
 
@@ -24,36 +23,23 @@ public class AdvancedStepSequencer extends StepSequencer {
     private int nSteps;
     private GUIButton trigger;
     private LED[] leds;
-    private MasterTimer masterTimer;
 
-    public AdvancedStepSequencer(float tx, float ty, int tsteps, int ttracks, MasterTimer timer) {
+    public AdvancedStepSequencer(float tx, float ty, int tsteps, int ttracks) {
         super(tx, ty, 250, 100, tsteps, ttracks, 50, 0, 90, 10);
         nTracks = ttracks;
         nSteps = tsteps;
-        masterTimer = timer;
-
-
         this.addComponent(createTrackSelectorInterface());
-
         ResolutionDial resoultionDial = new ResolutionDial(this.getX() + this.getWidth() - 28, this.getY() + 6, 16, this);
         resoultionDial.setBaseShapeOpacity(0.3f);
         addResolutionLabel();
-
         addComponent(resoultionDial);
-
         createButtons();
-
         createLeds();
-
-
-        masterTimer.addSubTimerActionListener(new AdvancedStepSequencerListener(this, masterTimer));
-
     }
 
     @Override
     public void increaseCount() {
         super.increaseCount();
-
         leds[this.getLastCount()].off();
         leds[this.getCurrentCount()].on();
     }
@@ -62,7 +48,6 @@ public class AdvancedStepSequencer extends StepSequencer {
         double tx = this.getX() + 3;
         double ty = this.getY() + 3;
 
-
         trigger = new GUIButton(tx, ty, 10, 10, "trigger") {
 
             private boolean toggle = false;
@@ -70,11 +55,9 @@ public class AdvancedStepSequencer extends StepSequencer {
             @Override
             public void clicked() {
                 if (toggle) {
-                    stop();
                     toggle = false;
                     trigger.setOff();
                 } else {
-                    start();
                     toggle = true;
                     trigger.setOn();
                 }
@@ -160,14 +143,9 @@ public class AdvancedStepSequencer extends StepSequencer {
                 public void mouseClicked(MouseEvent e, SGNode node) {
                     if (trackSelectionButtons[id].isOn()) {
                         trackSelectionButtons[id].setOff();
-                        sequencer.setFocusMode(false);
                         sequencer.unfocusTrack(id);
                     } else {
                         trackSelectionButtons[id].setOn();
-                        if (!sequencer.isFocusMode()) {
-                            sequencer.setFocusMode(true);
-                        }
-                        sequencer.updateFocussedTrack(sequencer.getLastFocussedTrack());
                         sequencer.selectFocusTrack(id);
                     }
                     setTrackSelectionGroupOff(id);
@@ -185,6 +163,7 @@ public class AdvancedStepSequencer extends StepSequencer {
                 trackSelectionButtons[i].setOff();
             }
         }
+
     }
 
     private void addResolutionLabel() {

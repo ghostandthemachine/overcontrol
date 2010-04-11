@@ -53,7 +53,7 @@ public class Step extends SGGroup {
         stepID = si;
         parent = s;
 
-        delayTime = parent.getDelay() * 2;
+        delayTime = 200;
 
         //Set the animation fade out length to the same duration as a time between steps
         hardFadeOut = Clip.create(delayTime, hitStep, "opacity", 1f, 0f);
@@ -94,10 +94,6 @@ public class Step extends SGGroup {
     }
 
     public void hit() {
-        delayTime = parent.getDelay() * 2;
-        //Set the animation fade out length to the same duration as a time between steps
-        hardFadeOut.setDuration(delayTime);
-        softFadeOut.setDuration(delayTime);
 
         if (isAlive) {
             hardFadeOut.start();

@@ -40,7 +40,7 @@ public class FocusStep {
     Color vStepCurrentFillColor = stepOffFillColor;
     //gradient colors
     Color c1 = Color.yellow;
-    Color c2 = new Color(0,255,0,150);
+    Color c2 = new Color(0, 255, 0, 150);
     GradientPaint gc;
     private int stepID;
     private int currentTrack;
@@ -54,7 +54,7 @@ public class FocusStep {
         parent = s;
         stepID = i;
 
-        gc = new GradientPaint(x + w / 2, y + h/4, c1, x + w / 2, y + h - h/8, c2);
+        gc = new GradientPaint(x + w / 2, y + h / 4, c1, x + w / 2, y + h - h / 8, c2);
 
         stepGroup.add(step);
         stepGroup.add(velocityStep);
@@ -107,10 +107,22 @@ public class FocusStep {
         float th = h - ty;
         velocityStep.setShape(new Rectangle2D.Float(tx, y + ty, tw, th));
         velocityStep.setFillPaint(gc);
-        velocityStep.setOpacity(Tools.map(velocity, 0f, 1f, 0.4f, 0.8f));
 
         velocity = Tools.map(ty, 0, h, 1.0f, 0.0f);
+
         parent.updateVelocityArray(stepID, velocity);
+    }
+
+    //to be used by parent sequencer when toggling view to focus track mode. This is used to update
+    //the currently focussed tracks' meter levels from the parent sequencers' velocity array without
+    //then setting it again as it would with setVelocityStepLevel()
+    public void updateStepLevel(float ty) {
+        float tx = x;
+        float tw = w;
+        float th = h - ty + y;
+        velocityStep.setShape(new Rectangle2D.Float(tx, ty, tw, th));
+        velocityStep.setFillPaint(gc);
+        System.out.println(ty);
     }
 
     public void setVelocityToZero() {

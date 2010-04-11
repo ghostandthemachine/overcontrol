@@ -11,7 +11,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author jon
+ * @author jon rose
  */
 public class Main {
 
@@ -31,14 +31,11 @@ public class Main {
         frame.setVisible(true);
         frame.setTitle("Scenario interface tests");
         frame.setLayout(new BorderLayout());
-        MasterTimer timer = new MasterTimer();
-        MasterPanel master = new MasterPanel(timer);
+        MasterPanel master = new MasterPanel();
 
-        Transport transport = new Transport(timer);
+        Transport transport = new Transport();
         transport.setPreferredSize(new Dimension(frame.getSize().width, 30));
         frame.add(master, BorderLayout.CENTER);
         frame.add(transport, BorderLayout.SOUTH);
-
-        
     }
 }
