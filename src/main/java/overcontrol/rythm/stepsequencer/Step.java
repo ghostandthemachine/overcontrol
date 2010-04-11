@@ -93,7 +93,7 @@ public class Step extends SGGroup {
         return this;
     }
 
-    public void hitCount() {
+    public void hit() {
         delayTime = parent.getDelay() * 2;
         //Set the animation fade out length to the same duration as a time between steps
         hardFadeOut.setDuration(delayTime);
@@ -117,43 +117,21 @@ public class Step extends SGGroup {
         return isAlive;
     }
 
-    public void setVelocityStepLevel(float ty) {
-
-        float tx = x;
-        float tw = w;
-        float th = h - ty;
-
-        velocityStep.setShape(new RoundRectangle2D.Float(tx, y + ty, tw, th, r, r));
-        velocityStep.setFillPaint(vStepColor);
-//        velocityStep.setOpacity(Tools.map(velocity, 0, 127, 0.3f, 1.0f));
-
-        velocity = Tools.map(ty, 0f, h, 127.0f, 0.0f);
-        updateParentVelocityArray(velocity);
-    }
-
-    public void updateVelocityStepLevel() {
-        velocityStep.setShape(new RoundRectangle2D.Float(x, y, w, h, r, r));
-        velocityStep.setFillPaint(vStepColor);
-        velocityStep.setOpacity(Tools.constrain(Tools.map(velocity, 0, 127, 0.0f, 1.0f), 0.0f, 1.0f));   //sett opacity based on velocity
-    }
-
     public void setVelocityToZero() {
         velocity = 0;
-        setVelocityStepLevel(h);
-    }
-
-    public void setVelocity(float f) {
-        velocity = f;
-        velocity = Tools.constrain(velocity, 0, 127);
-        setVelocityStepLevel(Tools.map(f, 0, 127, h, 0));
+        updateParentVelocityArray(velocity);
+        setStepOff();
     }
 
     //update differs from set in that it doesn't update the parent array to avoid overflow
-    public void updateVelocity(float f) {
-        velocity = f;
-
-        updateVelocityStepLevel();
-
+    public void setVelocity(float f) {
+        velocity = (float) Tools.constrain(f, 0.0, 1.0);
+        updateParentVelocityArray(velocity);
+        if(velocity > 0){
+            setStepOn();
+        } else {
+            setStepOff();
+        }
     }
 
     public SGGroup getGroup() {
@@ -164,11 +142,6 @@ public class Step extends SGGroup {
         return velocity;
     }
 
-    public float getVelocityToUpdate() {
-        float newVelocity = Tools.map(velocity, 127.0f, 0.0f, 0f, h);
-        return newVelocity;
-    }
-
     private void updateParentVelocityArray(float velocity) {
         parent.updateVelocityArray(trackID, stepID, velocity);
     }
@@ -177,7 +150,7 @@ public class Step extends SGGroup {
         isAlive = true;
         velocity = parent.getCurrentDefaultVelocity();
 
-        velocityStep.setOpacity((float) Tools.map(velocity, 0, 127, 0.0, 1.0));
+        velocityStep.setOpacity(Tools.constrain(velocity, 0.5f, 1.0f));
         velocityStep.setShape(new RoundRectangle2D.Float(x, y, w, h, r, r));
         velocityStep.setFillPaint(vStepColor);
 

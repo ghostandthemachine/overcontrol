@@ -12,7 +12,6 @@ import overcontrol.core.GUIButton;
 import overcontrol.core.GUIButtonClickListener;
 import overcontrol.core.LED;
 import overcontrol.core.MasterTimer;
-import overcontrol.core.Tools;
 
 public class AdvancedStepSequencer extends StepSequencer {
 
@@ -32,7 +31,7 @@ public class AdvancedStepSequencer extends StepSequencer {
         nTracks = ttracks;
         nSteps = tsteps;
         masterTimer = timer;
-        
+
 
         this.addComponent(createTrackSelectorInterface());
 
@@ -50,7 +49,6 @@ public class AdvancedStepSequencer extends StepSequencer {
         masterTimer.addSubTimerActionListener(new AdvancedStepSequencerListener(this, masterTimer));
 
     }
-
 
     @Override
     public void increaseCount() {
@@ -162,12 +160,15 @@ public class AdvancedStepSequencer extends StepSequencer {
                 public void mouseClicked(MouseEvent e, SGNode node) {
                     if (trackSelectionButtons[id].isOn()) {
                         trackSelectionButtons[id].setOff();
+                        sequencer.setFocusMode(false);
                         sequencer.unfocusTrack(id);
-                    } else if (!trackSelectionButtons[id].isOn()) {
+                    } else {
                         trackSelectionButtons[id].setOn();
+                        if (!sequencer.isFocusMode()) {
+                            sequencer.setFocusMode(true);
+                        }
                         sequencer.updateFocussedTrack(sequencer.getLastFocussedTrack());
                         sequencer.selectFocusTrack(id);
-                        sequencer.setCurrentFocussedTrack(id);
                     }
                     setTrackSelectionGroupOff(id);
                 }
@@ -208,7 +209,7 @@ public class AdvancedStepSequencer extends StepSequencer {
             double ty = this.getY() + this.getHeight() - 10;
             leds[i] = new LED(tx, ty, radius);
             leds[i].setLedOnColor(Color.GREEN);
-            leds[i].setLedOffColor(new Color(0,255,0,50));
+            leds[i].setLedOffColor(new Color(0, 255, 0, 50));
             this.add(leds[i]);
         }
     }
@@ -219,5 +220,4 @@ public class AdvancedStepSequencer extends StepSequencer {
         leds[this.getLastCount()].off();
         leds[this.getCurrentCount()].on();
     }
-
 }

@@ -107,9 +107,9 @@ public class FocusStep {
         float th = h - ty;
         velocityStep.setShape(new Rectangle2D.Float(tx, y + ty, tw, th));
         velocityStep.setFillPaint(gc);
-        velocityStep.setOpacity(Tools.map(velocity, 0, 127, 0.4f, 0.8f));
+        velocityStep.setOpacity(Tools.map(velocity, 0f, 1f, 0.4f, 0.8f));
 
-        velocity = Tools.map(ty, 0, h, 127.0f, 0.0f);
+        velocity = Tools.map(ty, 0, h, 1.0f, 0.0f);
         parent.updateVelocityArray(stepID, velocity);
     }
 

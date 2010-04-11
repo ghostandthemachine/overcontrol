@@ -4,7 +4,7 @@
  */
 package overcontrol.core;
 
-import overcontrol.core.transport.Transport;
+import overcontrol.transport.Transport;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import javax.swing.JFrame;

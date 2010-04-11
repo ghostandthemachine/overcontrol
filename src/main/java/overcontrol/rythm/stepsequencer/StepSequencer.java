@@ -50,6 +50,7 @@ public class StepSequencer extends GUIComponent {
     private int lastFocussedTrack;
     private int nPresets = 8;
     private int currentPreset = 0;
+    private int lastPreset = 0;
     public static int THIRTYSECOND_NOTE = 4;
     public static int SIXTEENTH_NOTE = 2;
     public static int QUARTER_NOTE = 1;
@@ -163,7 +164,7 @@ public class StepSequencer extends GUIComponent {
 
     public void stepCountOn(int count) {
         for (int i = 0; i < nTracks; i++) {
-            stepGroup[i][count].hitCount();
+            stepGroup[i][count].hit();
             focusStepGroup[count].stepCountOn();
         }
     }
@@ -173,6 +174,15 @@ public class StepSequencer extends GUIComponent {
             stepGroup[i][count].stepCountOff();
             focusStepGroup[count].stepCountOff();
         }
+    }
+
+    public void setPreset(int i) {
+        lastPreset = currentPreset;
+        currentPreset = i;
+    }
+
+    public int getLastPreset(){
+        return lastPreset;
     }
 
     public void setStepShape(RoundRectangle2D.Double r) {
@@ -336,10 +346,6 @@ public class StepSequencer extends GUIComponent {
 
     }
 
-    void setLastFocussedTrack(int id) {
-        lastFocussedTrack = id;
-    }
-
     void setFocussedTrack(int i) {
         lastFocussedTrack = currentFocussedTrack;
         currentFocussedTrack = i;
@@ -356,20 +362,19 @@ public class StepSequencer extends GUIComponent {
 
     public void unfocusTrack(int i) {
         this.remove(focusTracks);
-        this.updateStepVelocities();
         this.add(steps);
     }
 
     public void updateFocussedTrack(int track) {
         for (int i = 0; i < nCounts; i++) {
-            focusStepGroup[i].setVelocityStepLevel(Tools.map(stepGroup[track][i].getVelocity(), 0f, 127f, (float) focusStepGroup[i].getStepShape().getBounds().getHeight(), 0f));
+            focusStepGroup[i].setVelocityStepLevel(Tools.map(stepGroup[track][i].getVelocity(), 0f, 1f, (float) focusStepGroup[i].getStepShape().getBounds().getHeight(), 0f));
         }
     }
 
     public void updateStepVelocities() {
         for (int track = 0; track < nTracks; track++) {
             for (int step = 0; step < nCounts; step++) {
-                stepGroup[track][step].updateVelocity(velocities[currentPreset][track][step]);
+                stepGroup[track][step].setVelocity(velocities[currentPreset][track][step]);
                 if (velocities[currentPreset][track][step] > 0) {
                     stepGroup[track][step].setAlive(true);
                 }
@@ -381,12 +386,15 @@ public class StepSequencer extends GUIComponent {
         return bpm;
     }
 
+    //used when velocity is set by the step class
     void updateVelocityArray(int trackID, int stepID, float velocity) {
         velocities[currentPreset][trackID][stepID] = velocity;
     }
 
+    //used when velocity is set by focus track class
     void updateVelocityArray(int stepID, float velocity) {
         velocities[currentPreset][currentFocussedTrack][stepID] = velocity;
+        stepGroup[currentFocussedTrack][stepID].setVelocity(velocity);
     }
 
     private void printVelocityArray() {
@@ -437,6 +445,10 @@ public class StepSequencer extends GUIComponent {
                 System.out.println("no synth set at ISynth " + i);
             }
         }
+    }
+
+    void setFocusMode(boolean b) {
+        focusMode = b;
     }
 }
 

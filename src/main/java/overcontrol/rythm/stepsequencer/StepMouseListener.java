@@ -41,8 +41,6 @@ public class StepMouseListener implements SGMouseListener {
             parentStep.setStepOff();
 
         } else if (!parentStep.isAlive()) {
-            System.out.println("turn on this step");
-
             parentSeq.setRemoveSteps(false);
             parentSeq.setAddSteps(true);
             parentStep.setStepOn();
