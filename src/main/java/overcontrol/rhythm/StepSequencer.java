@@ -406,7 +406,7 @@ public class StepSequencer extends GUIComponent {
         for (int i = 0; i < nTracks; i++) {
             try {
                 float newVelocity = velocities[currentPreset][i][step];
-                synths[i].recieve(newVelocity, now);
+                synths[i].hitAt(now, newVelocity);
             } catch (java.lang.NullPointerException e) {
                 System.out.println("no synth set at ISynth " + i);
             }

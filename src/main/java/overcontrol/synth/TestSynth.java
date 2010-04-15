@@ -50,7 +50,12 @@ public class TestSynth implements ISynth {
     }
 
     @Override
-    public void recieve(float velocity, long time) {
+    public void hitAt(long time, float velocity) {
         System.out.println("synth  " + this + "  v = " + velocity + "  t = " + time);
+    }
+
+    @Override
+    public void hit(float velocity) {
+        System.out.println("synth  " + this + "  v = " + velocity);
     }
 }

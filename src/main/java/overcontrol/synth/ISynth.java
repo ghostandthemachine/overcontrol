@@ -20,5 +20,7 @@ public interface ISynth {
 
     void control(String parameter, float value);
 
-    void recieve(float velocity, long time);
+    void hitAt(long time, float velocity);
+
+    void hit(float velocity);
 }
