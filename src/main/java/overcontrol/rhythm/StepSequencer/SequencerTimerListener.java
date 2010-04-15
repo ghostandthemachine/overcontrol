@@ -1,4 +1,4 @@
-package overcontrol.rythm.stepsequencer;
+package overcontrol.rhythm.StepSequencer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

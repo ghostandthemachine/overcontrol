@@ -5,7 +5,7 @@ import com.sun.scenario.scenegraph.SGGroup;
 import java.awt.Color;
 import javax.swing.Timer;
 import overcontrol.synth.TestSynth;
-import overcontrol.rythm.stepsequencer.AdvancedStepSequencer;
+import overcontrol.rhythm.StepSequencer.AdvancedStepSequencer;
 
 /**
  *

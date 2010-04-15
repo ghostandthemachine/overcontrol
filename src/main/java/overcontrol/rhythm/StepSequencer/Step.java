@@ -1,4 +1,4 @@
-package overcontrol.rythm.stepsequencer;
+package overcontrol.rhythm.StepSequencer;
 
 import com.sun.scenario.animation.Clip;
 import com.sun.scenario.scenegraph.SGGroup;

@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package overcontrol.rythm.stepsequencer;
+package overcontrol.rhythm.StepSequencer;
 
 import com.sun.scenario.scenegraph.SGGroup;
 import com.sun.scenario.scenegraph.SGShape;

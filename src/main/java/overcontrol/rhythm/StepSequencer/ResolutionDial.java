@@ -1,4 +1,4 @@
-package overcontrol.rythm.stepsequencer;
+package overcontrol.rhythm.StepSequencer;
 
 import overcontrol.core.GUIComponent;
 import java.awt.BasicStroke;
