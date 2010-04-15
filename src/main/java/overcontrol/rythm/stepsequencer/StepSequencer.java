@@ -8,7 +8,6 @@ import com.sun.scenario.scenegraph.SGShape;
 import com.sun.scenario.scenegraph.fx.FXShape;
 import java.awt.RenderingHints;
 import java.awt.geom.Line2D;
-import javax.swing.Timer;
 import overcontrol.core.Tools;
 import overcontrol.core.GUIComponent;
 import overcontrol.synth.ISynth;
@@ -53,15 +52,16 @@ public class StepSequencer extends GUIComponent {
     public static int QUARTER_NOTE = 1;
     public static int HALF_NOTE = 2;
     public static int WHOLE_NOTE = 4;
-    private float softVelocity = 60;
-    private float mediumVelocity = 90;
-    private float hardVelocity = 120;
+    private float softVelocity = 0.5f;
+    private float mediumVelocity = 0.7f;
+    private float hardVelocity = 0.9f;
     private float currentDefaultVelocity = mediumVelocity;
     private boolean removeSteps = false;
     private final int nSteps;
     private double focusTrackHeight;
     private boolean focusMode = false;
     private double focusStepHeight;
+    private float stepPad;
 
     public StepSequencer(float tx, float ty, float tw, float th, float tsteps, float ttracks, float xstep, float ystep, float plusw, float plush) {
         super(tx, ty, tw, th);
@@ -97,15 +97,24 @@ public class StepSequencer extends GUIComponent {
 
         stepGroup = new Step[nTracks][nCounts];
 
-        sw = ((tw - 4) / nCounts) + yStepOffset - 3;
-        sh = ((th - 4) / nTracks) - 3;
-        sr = ((tw - 4) / nCounts) / 4;
+        sw = seqWidth / (nCounts);
+        sh = (seqHeight - plusHeight) / (nTracks);
+        sr = sw / 4;
+        stepRect = new RoundRectangle2D.Double(0, 0, sw, sh, sr, sr);
+
+
+        stepPad = (float) (sh * 0.2);
+        sh *= 0.8;
+        sw *= 0.8;
 
         for (int track = 0; track < nTracks; track++) {
             for (int step = 0; step < nCounts; step++) {
 
-                double sx = 3.5 + (step * sw) + tx + xStepOffset + (step * 3);
-                double sy = 3.5 + (track * sh) + ty + (track * 3);
+                double sx = this.getX() + this.getXOffset();
+                sx += step * (sw + stepPad);
+                double sy = this.getY() + this.getYOffset();
+                sy += track * (sh + stepPad);
+
                 int stepId = step;
                 int trackId = track;
 
@@ -114,19 +123,22 @@ public class StepSequencer extends GUIComponent {
                 steps.add(stepGroup[track][step]);
             }
         }
-        stepRect = new RoundRectangle2D.Double(0, 0, sw - 3 + yStepOffset, sh - 3, sr, sr);
         this.addComponent(steps);
 
         createFocusTracks();
         createRulerLines();
+
+        System.out.println(" x = " + this.getX() + "   xoff = " + this.getXOffset() + "    y = " + this.getY() + "    yOff = " + this.getYOffset());
+
+
     }
 
     public void createFocusTracks() {
         focusStepGroup = new FocusStep[nCounts];
         float tempW = (float) ((this.getWidth()) / nCounts);
         for (int i = 0; i < nCounts; i++) {
-            double fsx = 3.5 + (i * sw) + this.getX() + xStepOffset + (i * 3);
-            double fsy = 3.5 + this.getY();
+            double fsx = stepPad + (i * sw) + this.getX() + xStepOffset + (i * stepPad);
+            double fsy = stepPad + this.getY();
             double fsw = sw;
             double fsh = focusStepHeight;
             focusTrackHeight = fsh;
@@ -176,7 +188,7 @@ public class StepSequencer extends GUIComponent {
         currentPreset = i;
     }
 
-    public int getLastPreset(){
+    public int getLastPreset() {
         return lastPreset;
     }
 
@@ -403,6 +415,16 @@ public class StepSequencer extends GUIComponent {
 
     void setFocusMode(boolean b) {
         focusMode = b;
+    }
+
+    @Override
+    public double getXOffset() {
+        return xStepOffset;
+    }
+
+    @Override
+    public double getYOffset() {
+        return yStepOffset;
     }
 }
 

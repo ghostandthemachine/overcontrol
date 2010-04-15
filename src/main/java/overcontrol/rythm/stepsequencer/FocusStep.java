@@ -105,11 +105,13 @@ public class FocusStep {
         float tx = x;
         float tw = w;
         float th = h - ty;
-        velocityStep.setShape(new Rectangle2D.Float(tx, y + ty, tw, th));
-        velocityStep.setFillPaint(gc);
-
-        velocity = Tools.map(ty, 0, h, 1.0f, 0.0f);
-
+        ty += y;
+        velocityStep.setShape(new Rectangle2D.Float(tx, ty, tw, th));
+        velocity = Tools.map(ty, h + y, y, 0f, 1.0f);
+        velocity = Tools.constrain(velocity, 0.0f, 1.0f);
+        if (velocity < 0.02) {
+            velocity = 0f;
+        }
         parent.updateVelocityArray(stepID, velocity);
     }
 
@@ -119,10 +121,10 @@ public class FocusStep {
     public void updateStepLevel(float ty) {
         float tx = x;
         float tw = w;
-        float th = h - ty + y;
+        float th = h - ty;
+        ty += y;
         velocityStep.setShape(new Rectangle2D.Float(tx, ty, tw, th));
-        velocityStep.setFillPaint(gc);
-        System.out.println(ty);
+        //   System.out.println(ty);
     }
 
     public void setVelocityToZero() {
@@ -132,7 +134,7 @@ public class FocusStep {
 
     public void setVelocity(float f) {
         velocity = f;
-        setVelocityStepLevel(Tools.map(f, 0, 127, h, 0));
+        setVelocityStepLevel(Tools.map(f, 0, 1, h, 0));
     }
 
     public SGGroup getGroup() {

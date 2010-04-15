@@ -57,7 +57,6 @@ public class FocusStepMouseListener implements SGMouseListener {
         if (parentFocusStep.getParent().getAddSteps()) {
             parentFocusStep.setVelocityStepLevel(Tools.constrain(me.getPoint().y - parentFocusStep.y, 0, parentFocusStep.h));
         }
-
         pressed(me, sgnode);
     }
 
@@ -71,11 +70,9 @@ public class FocusStepMouseListener implements SGMouseListener {
         over = true;
         FXShape node = (FXShape) sgnode;
         node.setDrawPaint(Color.lightGray);
-
         if (parentFocusStep.getParent().getAddSteps()) {
             parentFocusStep.setVelocityStepLevel(Tools.constrain(me.getPoint().y - parentFocusStep.y, 0, parentFocusStep.h));
         }
-
     }
 
     @Override
@@ -91,7 +88,6 @@ public class FocusStepMouseListener implements SGMouseListener {
         if (parentFocusStep.getParent().getAddSteps() && over) {
             parentFocusStep.setVelocityStepLevel(Tools.constrain(me.getPoint().y - parentFocusStep.y, 0, parentFocusStep.h));
         }
-
         dragged(me, sgnode);
     }
 

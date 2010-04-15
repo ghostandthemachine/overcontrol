@@ -7,8 +7,8 @@ package overcontrol.core;
 import com.sun.scenario.scenegraph.SGGroup;
 import com.sun.scenario.scenegraph.SGNode;
 import com.sun.scenario.scenegraph.SGShape;
+import com.sun.scenario.scenegraph.SGText;
 import com.sun.scenario.scenegraph.event.SGMouseListener;
-import com.sun.scenario.scenegraph.fx.FXGroup;
 import com.sun.scenario.scenegraph.fx.FXShape;
 import java.awt.Color;
 import java.awt.Point;
@@ -22,10 +22,16 @@ import java.awt.geom.RoundRectangle2D;
  */
 public class GUIButton extends GUIComponent {
 
-    private FXShape indicator = new FXShape();
+    private FXShape fxIndicator = new FXShape();
+    private SGText labelIndicator = new SGText();
+    private SGGroup groupIndicator = new SGGroup();
     private FXShape buttonShape = new FXShape();
-    private Color fillColor = new Color(200,200,200);
-    private Color onColor = new Color(150,150,150);
+    public static String FXSHAPE = "fxShape";
+    public static String GROUP = "group";
+    public static String LABEL = "label";
+    private String type;
+    private Color fillColor = new Color(200, 200, 200);
+    private Color onColor = new Color(150, 150, 150);
     private String id;
     private boolean isOn = false;
     private Color indicatorOnColor = Color.white;
@@ -40,6 +46,17 @@ public class GUIButton extends GUIComponent {
         buttonShape.setAntialiasingHint(RenderingHints.VALUE_ANTIALIAS_ON);
         add(buttonShape);
 
+        type = s;
+    }
+
+    public GUIButton(String s) {
+        super();
+        id = s;
+        buttonShape.setFillPaint(fillColor);
+        buttonShape.setMode(SGShape.Mode.FILL);
+        buttonShape.setAntialiasingHint(RenderingHints.VALUE_ANTIALIAS_ON);
+        add(buttonShape);
+
     }
 
     public boolean isOn() {
@@ -49,14 +66,21 @@ public class GUIButton extends GUIComponent {
     public void setOn() {
         buttonShape.setFillPaint(onColor);
         isOn = true;
-
-        indicator.setFillPaint(indicatorOnColor);
+        if (type.equals(GUIButton.FXSHAPE)) {
+            fxIndicator.setFillPaint(indicatorOnColor);
+        } else if (type.equals(GUIButton.LABEL)) {
+            labelIndicator.setDrawPaint(indicatorOnColor);
+        }
     }
 
     public void setOff() {
         buttonShape.setFillPaint(fillColor);
         isOn = false;
-        indicator.setFillPaint(indicatorColor);
+        if (type.equals(GUIButton.FXSHAPE)) {
+            fxIndicator.setFillPaint(indicatorColor);
+        } else if (type.equals(GUIButton.LABEL)) {
+            labelIndicator.setDrawPaint(indicatorColor);
+        }
     }
 
     @Override
@@ -89,12 +113,41 @@ public class GUIButton extends GUIComponent {
     }
 
     public void addIndicator(FXShape node) {
-        indicator = (FXShape) node;
-        indicator.setFillPaint(indicatorColor);
-        indicator.setMode(SGShape.Mode.STROKE_FILL);
-        indicator.setAntialiasingHint(RenderingHints.VALUE_ANTIALIAS_ON);
+        fxIndicator = (FXShape) node;
+        fxIndicator.setFillPaint(indicatorColor);
+        fxIndicator.setMode(SGShape.Mode.STROKE_FILL);
+        fxIndicator.setAntialiasingHint(RenderingHints.VALUE_ANTIALIAS_ON);
 
-        this.addComponent(indicator);
+        this.addComponent(fxIndicator);
+        type = GUIButton.FXSHAPE;
+    }
+
+    public void removeFXIndicator() {
+        this.remove(fxIndicator);
+    }
+
+    public void addIndicator(SGText node) {
+        labelIndicator = node;
+        labelIndicator.setFillPaint(indicatorColor);
+        labelIndicator.setMode(SGShape.Mode.STROKE_FILL);
+
+        this.addComponent(labelIndicator);
+        type = GUIButton.LABEL;
+    }
+
+    public void removeLabelIndicator() {
+        this.remove(labelIndicator);
+    }
+
+    public void addIndicator(SGGroup node) {
+        groupIndicator = node;
+
+        this.addComponent(groupIndicator);
+        type = GUIButton.GROUP;
+    }
+
+    public void removeGroupIndicator() {
+        this.remove(groupIndicator);
     }
 
     public void setIndicatorOnColor(Color color) {
@@ -103,6 +156,10 @@ public class GUIButton extends GUIComponent {
 
     public void setIdicatorColor(Color color) {
         indicatorColor = color;
+    }
+
+    public void setIsOn(boolean b) {
+        isOn = b;
     }
 
     public FXShape createTriangle() {
@@ -122,14 +179,14 @@ public class GUIButton extends GUIComponent {
     public FXShape createSquare() {
         FXShape shape = new FXShape();
         double pad = this.getWidth() / 4;
-        shape.setShape(new RoundRectangle2D.Double(this.getX() + pad, this.getY() + pad, this.getWidth()/2, this.getWidth()/2, 5, 5));
+        shape.setShape(new RoundRectangle2D.Double(this.getX() + pad, this.getY() + pad, this.getWidth() / 2, this.getWidth() / 2, 5, 5));
         return shape;
     }
 
-     public FXShape createCircle() {
+    public FXShape createCircle() {
         FXShape shape = new FXShape();
         double pad = this.getWidth() / 4;
-        shape.setShape(new Ellipse2D.Double(this.getX() + pad, this.getY() + pad, this.getWidth()/2, this.getWidth()/2));
+        shape.setShape(new Ellipse2D.Double(this.getX() + pad, this.getY() + pad, this.getWidth() / 2, this.getWidth() / 2));
         return shape;
     }
 }

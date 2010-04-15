@@ -70,6 +70,9 @@ public class GUIComponent extends FXGroup {
 
     }
 
+    public GUIComponent() {
+    }
+
     /**
      *
      * @param shape
@@ -225,6 +228,8 @@ public class GUIComponent extends FXGroup {
         baseShape.setTranslation(p);
         this.addComponent(baseShape);
 
+        x = baseShape.getTranslateX();
+        y = baseShape.getTranslateY();
         width = baseShape.getBounds().getWidth();
         height = baseShape.getBounds().getHeight();
 
@@ -285,14 +290,6 @@ public class GUIComponent extends FXGroup {
      * @return
      */
     public double getY() {
-
-
-
-
-
-
-
-
         return y;
     }
 
@@ -301,8 +298,7 @@ public class GUIComponent extends FXGroup {
      * @param x
      */
     public void setTranslateX(double x) {
-        translation.setTranslateX(
-                x);
+        translation.setTranslateX(x);
     }
 
     /**
@@ -472,4 +468,5 @@ public class GUIComponent extends FXGroup {
     public void setBaseShapeToRectangle() {
         baseShape.setShape(new Rectangle2D.Double(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
     }
+    
 }

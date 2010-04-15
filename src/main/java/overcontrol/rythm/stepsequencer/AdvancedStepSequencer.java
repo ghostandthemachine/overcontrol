@@ -25,7 +25,7 @@ public class AdvancedStepSequencer extends StepSequencer {
     private LED[] leds;
 
     public AdvancedStepSequencer(float tx, float ty, int tsteps, int ttracks) {
-        super(tx, ty, 250, 100, tsteps, ttracks, 50, 0, 90, 10);
+        super(tx, ty, 450, 150, tsteps, ttracks, 50, 6, 90, 10);
         nTracks = ttracks;
         nSteps = tsteps;
         this.addComponent(createTrackSelectorInterface());
@@ -34,6 +34,10 @@ public class AdvancedStepSequencer extends StepSequencer {
         addResolutionLabel();
         addComponent(resoultionDial);
         createButtons();
+   
+        
+        //     this.add(createPresetInterface());
+
         createLeds();
     }
 
@@ -47,9 +51,7 @@ public class AdvancedStepSequencer extends StepSequencer {
     void createButtons() {
         double tx = this.getX() + 3;
         double ty = this.getY() + 3;
-
-        trigger = new GUIButton(tx, ty, 10, 10, "trigger") {
-
+        trigger = new GUIButton(tx, ty, 20, 20, "trigger") {
             private boolean toggle = false;
 
             @Override
@@ -63,14 +65,11 @@ public class AdvancedStepSequencer extends StepSequencer {
                 }
             }
         };
-
         trigger.addIndicator(trigger.createTriangle());
         trigger.setBaseColor(Color.lightGray);
         trigger.setOnColor(Color.white);
-
         trigger.setIndicatorOnColor(Color.green);
         trigger.setIdicatorColor(Color.white);
-
         this.add(trigger);
     }
 
@@ -81,10 +80,10 @@ public class AdvancedStepSequencer extends StepSequencer {
         double bw = 10;
         double bh = 10;
 
-        for (int i = 0; i < (numPresetButtons / 2) - 1; i++) {
-            for (int j = 0; j < (numPresetButtons / 2) - 1; j++) {
-                double tx = 3 + (i * (bw + 3));
-                double ty = 3 + (j * (bh + 3));
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < (numPresetButtons / 2); j++) {
+                double tx = 3 + (i * (bw + 3)) + this.getX();
+                double ty = 20 + (j * (bh + 3)) + this.getY();
                 presetButtons[i][j] = new GUIButton(tx, ty, bw, bh, Integer.toString(0));
                 presetButtons[i][j].addMouseListener(new GUIButtonClickListener(presetButtons[i][j], i, j) {
 
@@ -98,8 +97,8 @@ public class AdvancedStepSequencer extends StepSequencer {
                         } else {
                             toggle = true;
                             this.getParent().setOn();
-                            for (int i = 0; i < numPresetButtons / 2 - 1; i++) {
-                                for (int j = 0; j < numPresetButtons / 2 - 1; j++) {
+                            for (int i = 0; i < 2; i++) {
+                                for (int j = 0; j < numPresetButtons / 2; j++) {
                                     if (i != this.getID()) {
                                         presetButtons[i][j].setOff();
                                     }
@@ -108,7 +107,18 @@ public class AdvancedStepSequencer extends StepSequencer {
                         }
                     }
                 });
+                Color presetBaseColor = new Color(175,175,175);
+                presetButtons[i][j].setBaseColor(presetBaseColor);
+                SGText id = new SGText();
+                id.setText(Integer.toString(i * j));
+                id.setFont(new Font("helvetica",Font.BOLD,12));
+                id.setDrawPaint(Color.white);
 
+                double tbx = presetButtons[i][j].getX() + 3;
+                double tby = presetButtons[i][j].getY() + 3;
+                id.setLocation(new Point2D.Double(tbx, tby));
+
+                presetButtons[i][j].addIndicator(id);
 
                 group.add(presetButtons[i][j]);
             }
@@ -119,20 +129,15 @@ public class AdvancedStepSequencer extends StepSequencer {
     public SGGroup createTrackSelectorInterface() {
         SGGroup group = new SGGroup();
         trackSelectionButtons = new GUIButton[nTracks];
-
-        Point2D.Double p = new Point2D.Double(this.getX(), this.getY());
-        Point2D p2 = this.getBaseShape().localToGlobal(p, p);
-
-
+        System.out.println(this.getStepShape().getBounds());
         for (int i = 0; i < nTracks; i++) {
             final int id = i;
 
-            Point2D.Double p1 = new Point2D.Double((p2.getX() + this.getxStepOffset() + this.getX()) / 2, p2.getY() + (i * this.getStepShape().getHeight()) + 2);
-
             double bw = this.getStepShape().getWidth() * 0.8;
-            double bh = this.getStepShape().getWidth() * 0.8;
-            double bx = p1.x + this.getxStepOffset() - 35;
-            double by = p1.y + (i * this.getStepShape().getHeight()) + 2;
+            double bh = this.getStepShape().getHeight() * 0.8;
+            double bx = this.getX() + this.getxStepOffset() - (bw + bw/2);
+            double by = this.getY();
+            by += (i * this.getStepShape().getHeight());
 
             trackSelectionButtons[i] = new GUIButton(bx, by, bw, bh, Integer.toString(0));
             trackSelectionButtons[i].addMouseListener(new SelectionButtonListener(this) {
@@ -183,9 +188,10 @@ public class AdvancedStepSequencer extends StepSequencer {
     private void createLeds() {
         leds = new LED[nSteps];
         for (int i = 0; i < nSteps; i++) {
-            int radius = 6;
-            double tx = 76 + (i * ((radius * 2) + 3.4));
-            double ty = this.getY() + this.getHeight() - 10;
+            double radius = this.getStepShape().getWidth() / 3;
+            double tx = this.getX() + this.getXOffset() + (this.getStepShape().getWidth() / 4);
+            tx += i * (this.getStepShape().getWidth() + 0.275);
+            double ty = this.getY() + this.getHeight() - radius;
             leds[i] = new LED(tx, ty, radius);
             leds[i].setLedOnColor(Color.GREEN);
             leds[i].setLedOffColor(new Color(0, 255, 0, 50));
