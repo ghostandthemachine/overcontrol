@@ -189,9 +189,9 @@ public class AdvancedStepSequencer extends StepSequencer {
         leds = new LED[nSteps];
         for (int i = 0; i < nSteps; i++) {
             double radius = this.getStepShape().getWidth() / 3;
-            double tx = this.getX() + this.getXOffset() + (this.getStepShape().getWidth() / 4);
-            tx += i * (this.getStepShape().getWidth() + 0.275);
-            double ty = this.getY() + this.getHeight() - radius;
+            double tx = this.getX() + this.getXOffset() + (this.getStepShape().getWidth() / 4) + radius/4;
+            tx += i * (this.getStepShape().getWidth() + radius/2);
+            double ty = this.getY() + this.getHeight() - radius - radius/2;
             leds[i] = new LED(tx, ty, radius);
             leds[i].setLedOnColor(Color.GREEN);
             leds[i].setLedOffColor(new Color(0, 255, 0, 50));

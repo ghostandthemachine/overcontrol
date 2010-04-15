@@ -14,12 +14,14 @@ public class SynthParameter implements ISynthParameter {
     float start;
     float end;
     float step;
+    float defaultValue;
 
-    public SynthParameter(String name, float start, float end, float step) {
+    public SynthParameter(String name, float start, float end, float step, float defaultValue) {
         this.name = name;
         this.start = start;
         this.end = end;
         this.step = step;
+        this.defaultValue = defaultValue;
     }
 
     @Override
@@ -40,5 +42,10 @@ public class SynthParameter implements ISynthParameter {
     @Override
     public float getStep() {
         return step;
+    }
+
+    @Override
+    public float getDefaultValue() {
+        return defaultValue;
     }
 }

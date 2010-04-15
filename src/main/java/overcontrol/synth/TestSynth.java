@@ -12,14 +12,14 @@ public class TestSynth implements ISynth {
 
     String name = "TestSynth";
     SynthParameter[] params = {
-        new SynthParameter("level", 0, 2000, 1),
-        new SynthParameter("freq", 0, 20000, 1),
-        new SynthParameter("pan", -100, 100, 1),
-        new SynthParameter("dur", 0, 2000, 1),
-        new SynthParameter("release", 0, 2000, 1),
-        new SynthParameter("attack", 0, 20000, 1),
-        new SynthParameter("sustain", -100, 100, 1),
-        new SynthParameter("nothing", 0, 2000, 1)
+        new SynthParameter("level", 0, 2000, 1, 1000),
+        new SynthParameter("freq", 0, 20000, 1, 1000),
+        new SynthParameter("pan", -100, 100, 1, 0),
+        new SynthParameter("dur", 0, 2000, 1, 1000),
+        new SynthParameter("release", 0, 2000, 1, 1000),
+        new SynthParameter("attack", 0, 20000, 1, 1000),
+        new SynthParameter("sustain", -100, 100, 1, 100),
+        new SynthParameter("nothing", 0, 2000, 1, 1000)
     };
 
     @Override

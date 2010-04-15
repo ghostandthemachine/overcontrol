@@ -19,4 +19,6 @@ public interface ISynthParameter {
 
      float getStep();
 
+     float getDefaultValue();
+
 }
