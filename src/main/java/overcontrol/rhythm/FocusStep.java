@@ -1,4 +1,4 @@
-package overcontrol.rhythm.StepSequencer;
+package overcontrol.rhythm;
 
 import com.sun.scenario.scenegraph.SGGroup;
 import java.awt.BasicStroke;

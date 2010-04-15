@@ -1,4 +1,4 @@
-package overcontrol.rhythm.StepSequencer;
+package overcontrol.rhythm;
 
 import com.sun.scenario.scenegraph.SGGroup;
 import com.sun.scenario.scenegraph.SGNode;
@@ -24,12 +24,12 @@ public class AdvancedStepSequencer extends StepSequencer {
     private GUIButton trigger;
     private LED[] leds;
 
-    public AdvancedStepSequencer(float tx, float ty, int tsteps, int ttracks) {
-        super(tx, ty, 450, 150, tsteps, ttracks, 50, 6, 90, 10);
+    public AdvancedStepSequencer(float tx, float ty, float width, float  height, int tsteps, int ttracks) {
+        super(tx, ty, width - (width/8), 150, tsteps, ttracks, width/8, 6, width/8, 10);
         nTracks = ttracks;
         nSteps = tsteps;
         this.addComponent(createTrackSelectorInterface());
-        ResolutionDial resoultionDial = new ResolutionDial(this.getX() + this.getWidth() - 28, this.getY() + 6, 16, this);
+        ResolutionDial resoultionDial = new ResolutionDial(this.getX() + this.getWidth() - 40, this.getY() + 16, 26, this);
         resoultionDial.setBaseShapeOpacity(0.3f);
         addResolutionLabel();
         addComponent(resoultionDial);
@@ -173,14 +173,14 @@ public class AdvancedStepSequencer extends StepSequencer {
 
     private void addResolutionLabel() {
 
-        double textX = this.getGlobalCoordinate().getX() + this.getWidth() - 26;
-        double textY = this.getGlobalCoordinate().getY() + 30;
+        double textX = this.getGlobalCoordinate().getX() + this.getWidth() - 46;
+        double textY = this.getGlobalCoordinate().getY() + 55;
 
         SGText resolutionLabel = new SGText();
         resolutionLabel.setFont(new Font("helvitica", Font.PLAIN, 9));
         resolutionLabel.setFillPaint(Color.white);
         resolutionLabel.setLocation(new Point2D.Double(textX, textY));
-        resolutionLabel.setText("reso");
+        resolutionLabel.setText("resolution");
 
         this.addComponent(resolutionLabel);
     }

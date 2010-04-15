@@ -1,4 +1,4 @@
-package overcontrol.rhythm.StepSequencer;
+package overcontrol.rhythm;
 
 import java.awt.Color;
 import java.awt.geom.RoundRectangle2D;

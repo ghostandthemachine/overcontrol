@@ -4,8 +4,8 @@ import com.sun.scenario.scenegraph.JSGPanel;
 import com.sun.scenario.scenegraph.SGGroup;
 import java.awt.Color;
 import javax.swing.Timer;
+import overcontrol.rhythm.AdvancedStepSequencer;
 import overcontrol.synth.TestSynth;
-import overcontrol.rhythm.StepSequencer.AdvancedStepSequencer;
 
 /**
  *
@@ -41,7 +41,7 @@ public class MasterPanel extends JSGPanel {
         };
 
 
-        AdvancedStepSequencer seq = new AdvancedStepSequencer(20, 20, 16, 8);
+        AdvancedStepSequencer seq = new AdvancedStepSequencer(20, 20, 600, 200, 16, 8);
 
         //set current synths being triggered by passing an array or (id, synth)
         seq.setSynth(synths);

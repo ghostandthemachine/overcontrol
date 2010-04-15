@@ -5,8 +5,7 @@
 package overcontrol.core;
 
 import com.sun.scenario.scenegraph.event.SGMouseAdapter;
-import overcontrol.rhythm.StepSequencer.AdvancedStepSequencer;
-
+import overcontrol.rhythm.AdvancedStepSequencer;
 
 /**
  *

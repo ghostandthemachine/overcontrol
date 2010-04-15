@@ -3,7 +3,7 @@ package overcontrol.core;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.Timer;
-import overcontrol.rhythm.StepSequencer.AdvancedStepSequencerListener;
+import overcontrol.rhythm.AdvancedStepSequencerListener;
 
 public class MasterTimer extends Timer {
 
