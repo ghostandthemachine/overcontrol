@@ -123,7 +123,7 @@ public class Step extends SGGroup {
     public void setVelocity(float f) {
         velocity = (float) Tools.constrain(f, 0.0, 1.0);
         updateParentVelocityArray(velocity);
-        if(velocity > 0){
+        if (velocity > 0) {
             setStepOn();
         } else {
             setStepOff();
@@ -172,4 +172,22 @@ public class Step extends SGGroup {
         hardFadeOut = Clip.create(delayTime, hitStep, "opacity", 1f, 0f);
         softFadeOut = Clip.create(delayTime, hitStep, "opacity", 0.3f, 0f);
     }
+
+    public float getHeight() {
+        return h;
+    }
+
+
+    public float getWidth() {
+        return w;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
 }

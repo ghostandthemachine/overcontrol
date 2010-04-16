@@ -14,9 +14,9 @@ import overcontrol.synth.ISynth;
 
 public class StepSequencer extends GUIComponent {
 
-    float[][][] velocities;
+    protected float[][][] velocities;
     ISynth[] synths;
-    Step[][] stepGroup;
+    protected Step[][] stepGroup;
     FocusStep[] focusStepGroup;
     SGGroup steps = new SGGroup();
     SGGroup focusTracks = new SGGroup();
@@ -121,16 +121,13 @@ public class StepSequencer extends GUIComponent {
                 stepGroup[track][step] = new Step(this, sx, sy, sw, sh, sr, trackId, stepId);
                 stepGroup[track][step].setVelocityToZero();
                 steps.add(stepGroup[track][step]);
+
             }
         }
         this.addComponent(steps);
 
         createFocusTracks();
         createRulerLines();
-
-        System.out.println(" x = " + this.getX() + "   xoff = " + this.getXOffset() + "    y = " + this.getY() + "    yOff = " + this.getYOffset());
-
-
     }
 
     public void createFocusTracks() {

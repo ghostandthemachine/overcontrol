@@ -23,21 +23,20 @@ public class AdvancedStepSequencer extends StepSequencer {
     private int nSteps;
     private GUIButton trigger;
     private LED[] leds;
+    ResolutionDial resoultionDial;
 
-    public AdvancedStepSequencer(float tx, float ty, float width, float  height, int tsteps, int ttracks) {
-        super(tx, ty, width - (width/8), 150, tsteps, ttracks, width/8, 6, width/8, 10);
+    public AdvancedStepSequencer(float tx, float ty, float width, float height, int tsteps, int ttracks) {
+        super(tx, ty, width - (width / 8), 150, tsteps, ttracks, width / 8, 6, width / 8, 10);
         nTracks = ttracks;
         nSteps = tsteps;
         this.addComponent(createTrackSelectorInterface());
-        ResolutionDial resoultionDial = new ResolutionDial(this.getX() + this.getWidth() - 40, this.getY() + 16, 26, this);
+        int rw = (int) (this.width / 20);
+        resoultionDial = new ResolutionDial(x + this.width - rw * 1.35, y + height/16, rw, this);
         resoultionDial.setBaseShapeOpacity(0.3f);
         addResolutionLabel();
         addComponent(resoultionDial);
         createButtons();
-   
-        
         //     this.add(createPresetInterface());
-
         createLeds();
     }
 
@@ -52,6 +51,7 @@ public class AdvancedStepSequencer extends StepSequencer {
         double tx = this.getX() + 3;
         double ty = this.getY() + 3;
         trigger = new GUIButton(tx, ty, 20, 20, "trigger") {
+
             private boolean toggle = false;
 
             @Override
@@ -107,11 +107,11 @@ public class AdvancedStepSequencer extends StepSequencer {
                         }
                     }
                 });
-                Color presetBaseColor = new Color(175,175,175);
+                Color presetBaseColor = new Color(175, 175, 175);
                 presetButtons[i][j].setBaseColor(presetBaseColor);
                 SGText id = new SGText();
                 id.setText(Integer.toString(i * j));
-                id.setFont(new Font("helvetica",Font.BOLD,12));
+                id.setFont(new Font("helvetica", Font.BOLD, 12));
                 id.setDrawPaint(Color.white);
 
                 double tbx = presetButtons[i][j].getX() + 3;
@@ -133,11 +133,10 @@ public class AdvancedStepSequencer extends StepSequencer {
         for (int i = 0; i < nTracks; i++) {
             final int id = i;
 
-            double bw = this.getStepShape().getWidth() * 0.8;
+            double bw = this.getStepShape().getWidth() * 0.5;
             double bh = this.getStepShape().getHeight() * 0.8;
-            double bx = this.getX() + this.getxStepOffset() - (bw + bw/2);
-            double by = this.getY();
-            by += (i * this.getStepShape().getHeight());
+            double bx = this.getX() + this.getxStepOffset() - (bw + bw / 2);
+            double by = stepGroup[i][0].y + stepGroup[i][0].getStepShape().getBounds().getHeight() * 0.05;
 
             trackSelectionButtons[i] = new GUIButton(bx, by, bw, bh, Integer.toString(0));
             trackSelectionButtons[i].addMouseListener(new SelectionButtonListener(this) {
@@ -158,7 +157,6 @@ public class AdvancedStepSequencer extends StepSequencer {
             });
             group.add(trackSelectionButtons[i].getComponentGroup());
         }
-
         return group;
     }
 
@@ -168,7 +166,6 @@ public class AdvancedStepSequencer extends StepSequencer {
                 trackSelectionButtons[i].setOff();
             }
         }
-
     }
 
     private void addResolutionLabel() {
@@ -189,9 +186,8 @@ public class AdvancedStepSequencer extends StepSequencer {
         leds = new LED[nSteps];
         for (int i = 0; i < nSteps; i++) {
             double radius = this.getStepShape().getWidth() / 3;
-            double tx = this.getX() + this.getXOffset() + (this.getStepShape().getWidth() / 4) + radius/4;
-            tx += i * (this.getStepShape().getWidth() + radius/2);
-            double ty = this.getY() + this.getHeight() - radius - radius/2;
+            double tx = stepGroup[0][i].x + radius;
+            double ty = this.getY() + this.getHeight() - radius - radius / 2;
             leds[i] = new LED(tx, ty, radius);
             leds[i].setLedOnColor(Color.GREEN);
             leds[i].setLedOffColor(new Color(0, 255, 0, 50));

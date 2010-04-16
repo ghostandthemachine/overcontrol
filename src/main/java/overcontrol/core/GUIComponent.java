@@ -9,7 +9,6 @@
  */
 package overcontrol.core;
 
-import com.sun.scenario.scenegraph.SGGroup;
 import com.sun.scenario.scenegraph.SGNode;
 import com.sun.scenario.scenegraph.SGShape;
 import com.sun.scenario.scenegraph.SGTransform;
@@ -32,13 +31,13 @@ import java.awt.geom.RoundRectangle2D;
 public class GUIComponent extends FXGroup {
 
     GUIComponent parent = null;
-    private double x;
-    private double y;
-    private double xOffset = 0;
-    private double yOffset = 0;
-    private double width;
-    private double height;
-    private Color baseColor = new Color(210, 210, 210);
+    protected double x;
+    protected double y;
+    protected double xOffset = 0;
+    protected double yOffset = 0;
+    protected double width;
+    protected double height;
+    protected Color baseColor = new Color(210, 210, 210);
     private FXShape baseShape = new FXShape();
     private double mouseX = 0;
     private double mouseY = 0;
