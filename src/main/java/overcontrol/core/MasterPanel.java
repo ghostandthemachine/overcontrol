@@ -40,7 +40,6 @@ public class MasterPanel extends JSGPanel {
             new TestSynth(),
         };
 
-
         AdvancedStepSequencer seq = new AdvancedStepSequencer(20, 20, 600, 200, 16, 8);
 
         //set current synths being triggered by passing an array or (id, synth)

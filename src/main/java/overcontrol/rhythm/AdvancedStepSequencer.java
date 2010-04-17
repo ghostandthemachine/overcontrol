@@ -11,6 +11,7 @@ import java.awt.geom.Point2D;
 import overcontrol.core.GUIButton;
 import overcontrol.core.GUIButtonClickListener;
 import overcontrol.core.LED;
+import overcontrol.core.SDropMenu;
 
 public class AdvancedStepSequencer extends StepSequencer {
 
@@ -24,20 +25,28 @@ public class AdvancedStepSequencer extends StepSequencer {
     private GUIButton trigger;
     private LED[] leds;
     ResolutionDial resoultionDial;
+    String[] avaiableSources = {"", "", "", ""};
+    private SourceMenuButton[] sourceMenuButtons;
 
     public AdvancedStepSequencer(float tx, float ty, float width, float height, int tsteps, int ttracks) {
-        super(tx, ty, width - (width / 8), 150, tsteps, ttracks, width / 8, 6, width / 8, 10);
+        super(tx, ty, width - (width / 4), 150, tsteps, ttracks, width / 8, 6, width / 4, 10);
         nTracks = ttracks;
         nSteps = tsteps;
-        this.addComponent(createTrackSelectorInterface());
+
+        this.addComponent(createTrackSelectorButtons());
         int rw = (int) (this.width / 20);
-        resoultionDial = new ResolutionDial(x + this.width - rw * 1.35, y + height/16, rw, this);
+
+        resoultionDial = new ResolutionDial(x + this.width - rw * 1.35, y + height / 16, rw, this);
         resoultionDial.setBaseShapeOpacity(0.3f);
         addResolutionLabel();
+
         addComponent(resoultionDial);
         createButtons();
         //     this.add(createPresetInterface());
         createLeds();
+
+        createSourceMenuButtons();
+
     }
 
     @Override
@@ -126,10 +135,9 @@ public class AdvancedStepSequencer extends StepSequencer {
         return group;
     }
 
-    public SGGroup createTrackSelectorInterface() {
+    public SGGroup createTrackSelectorButtons() {
         SGGroup group = new SGGroup();
         trackSelectionButtons = new GUIButton[nTracks];
-        System.out.println(this.getStepShape().getBounds());
         for (int i = 0; i < nTracks; i++) {
             final int id = i;
 
@@ -166,6 +174,24 @@ public class AdvancedStepSequencer extends StepSequencer {
                 trackSelectionButtons[i].setOff();
             }
         }
+    }
+
+    public void createSourceMenuButtons() {
+        SGGroup group = new SGGroup();
+        sourceMenuButtons = new SourceMenuButton[nTracks];
+        for (int i = 0; i < nTracks; i++) {
+            final int id = i;
+
+            double bw = this.getStepShape().getWidth() * 2;
+            double bh = this.getStepShape().getHeight() * 0.8;
+            double bx = stepGroup[i][nSteps - 1].x + this.getStepShape().getWidth() * 1.5;
+            double by = stepGroup[i][0].y;
+
+            sourceMenuButtons[i] = new SourceMenuButton(bx, by, bw, bh, id);
+
+            group.add(sourceMenuButtons[i]);
+        }
+        this.add(group);
     }
 
     private void addResolutionLabel() {

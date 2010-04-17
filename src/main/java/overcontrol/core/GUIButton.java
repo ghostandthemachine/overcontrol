@@ -135,6 +135,10 @@ public class GUIButton extends GUIComponent {
         type = GUIButton.LABEL;
     }
 
+    public void setIndicator(String string) {
+        labelIndicator.setText(string);
+    }
+
     public void removeLabelIndicator() {
         this.remove(labelIndicator);
     }
